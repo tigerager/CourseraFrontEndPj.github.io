@@ -5,11 +5,13 @@ export const AppReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_QUANTITY':
             let updatedqty = false;
+            let total = 0;
             state.expenses.map((expense)=>{
                 if(expense.name === action.payload.name) {
                     expense.quantity = expense.quantity + action.payload.quantity;
                     updatedqty = true;
                 }
+                total += expense.quantity;
                 new_expenses.push(expense);
                 return true;
             })
