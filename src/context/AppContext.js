@@ -4,16 +4,15 @@ export const AppReducer = (state, action) => {
     let new_expenses = [];
     switch (action.type) {
         case 'ADD_QUANTITY':
-            let updatedqty = false;
-            let total = 0;
+            //let updatedqty = false;
             state.expenses.map((expense)=>{
                 if(expense.name === action.payload.name) {
                     expense.quantity = expense.quantity + action.payload.quantity;
-                    updatedqty = true;
-                }
-                total += expense.quantity;
+                    state.total += action.payload.quantity;
+                    //updatedqty = true;
+                } 
                 new_expenses.push(expense);
-                return true;
+                return true;    
             })
             state.expenses = new_expenses;
             action.type = "DONE";
@@ -66,7 +65,8 @@ const initialState = {
         { id: "Human Resource", name: 'Human Resource', quantity: 0, unitprice: 600 },
         { id: "IT", name: 'IT', quantity: 0, unitprice: 200 },
     ],
-    Location: '$'
+    Location: '$',
+    total: 0
 };
 // 2. Creates the context this is the thing our components import and use to get the state
 export const AppContext = createContext();
@@ -85,7 +85,8 @@ state.CartValue = totalExpenses;
                 expenses: state.expenses,
                 CartValue: state.CartValue,
                 dispatch,
-                currency: state.Location
+                currency: state.Location,
+                total: state.total,
             }}
         >
             {props.children}
