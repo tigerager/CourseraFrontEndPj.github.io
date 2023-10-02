@@ -7,8 +7,14 @@ export const AppReducer = (state, action) => {
             //let updatedqty = false;
             state.expenses.map((expense)=>{
                 if(expense.name === action.payload.name) {
-                    expense.quantity = expense.quantity + action.payload.quantity;
-                    state.total += action.payload.quantity;
+                    if(action.payload.quantity <= state.remaining){
+                        state.remaining = state.remaining - action.payload.quantity;
+                        expense.quantity = expense.quantity + action.payload.quantity;
+                        state.total += action.payload.quantity;
+                    }
+                    else{
+                        alert("too low");
+                    }
                     //updatedqty = true;
                 } 
                 new_expenses.push(expense);
@@ -52,9 +58,18 @@ export const AppReducer = (state, action) => {
             return {
                 ...state
             }
+       
+
+    case 'ADD_REMAINING':
+            action.type = "DONE";
+            state.remaining = action.payload;
+            return {
+                ...state
+            }
         default:
             return state;
     }
+
 };
 // 1. Sets the initial state when the app loads
 const initialState = {
@@ -66,7 +81,9 @@ const initialState = {
         { id: "IT", name: 'IT', quantity: 0, unitprice: 200 },
     ],
     Location: '$',
-    total: 0
+    total: 0,
+    remaining: 0,
+  
 };
 // 2. Creates the context this is the thing our components import and use to get the state
 export const AppContext = createContext();
@@ -87,6 +104,7 @@ state.CartValue = totalExpenses;
                 dispatch,
                 currency: state.Location,
                 total: state.total,
+                remaining: state.remaining,
             }}
         >
             {props.children}

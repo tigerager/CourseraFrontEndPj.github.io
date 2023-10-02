@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-const Remaining = () => {
+const SpentSoFar = () => {
     const { currency, total } = useContext(AppContext);
     return (
         <div className='alert alert-primary'>
@@ -8,4 +8,4 @@ const Remaining = () => {
         </div>
     );
 };
-export default Remaining;
+export default SpentSoFar;
