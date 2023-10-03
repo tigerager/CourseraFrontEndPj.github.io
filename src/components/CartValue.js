@@ -2,13 +2,19 @@ import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import Remaining from './Remaining';
 const CartValue = () => {
-    const { dispatch, currency } = useContext(AppContext);
+    const { dispatch, currency, total } = useContext(AppContext);
     const valB = (num) => { 
-        dispatch({
-            type: 'ADD_REMAINING',
-            payload: num,
+        if(num<total){
+            alert('You cannot reduce the budget value lower than the spending');
+            document.getElementById('budget').value= total;
         }
-        );    
+        else{
+            dispatch({
+                type: 'ADD_REMAINING',
+                payload: num,
+            }
+            );  
+        } 
 
     }
     return (

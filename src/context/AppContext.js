@@ -13,7 +13,7 @@ export const AppReducer = (state, action) => {
                         state.total += action.payload.quantity;
                     }
                     else{
-                        alert("too low");
+                        alert("The value cannot exceed remaining funds "+state.remaining);
                     }
                     //updatedqty = true;
                 } 
@@ -39,10 +39,52 @@ export const AppReducer = (state, action) => {
                 return {
                     ...state,
                 };
+
+            case 'DECREASE_BY_10':
+            state.expenses.map((expense)=>{
+                if(expense.name === action.payload.name) {
+                    if(state.total > 0){
+                        state.remaining += 10;
+                        expense.quantity = expense.quantity - 10;
+                        state.total -= 10;
+                    } 
+                }
+                expense.quantity = expense.quantity < 0 ? 0: expense.quantity;
+                new_expenses.push(expense);
+                return true;
+            })
+            state.expenses = new_expenses;
+            action.type = "DONE";
+            return {
+                ...state,
+            };
+
+            case 'INCREASE_BY_10':
+            state.expenses.map((expense)=>{
+                if(expense.name === action.payload.name) {
+                    if(state.remaining > 0){
+                        state.remaining -= 10;
+                        expense.quantity = expense.quantity + 10;
+                        state.total += 10;
+                    } 
+                }
+                expense.quantity = expense.quantity < 0 ? 0: expense.quantity;
+                new_expenses.push(expense);
+                return true;
+            })
+            state.expenses = new_expenses;
+            action.type = "DONE";
+            return {
+                ...state,
+            };
+
+
         case 'DELETE_ITEM':
             state.expenses.map((expense)=>{
                 if(expense.name === action.payload.name) {
-                    expense.quantity = 0;
+                    state.remaining += expense.quantity;
+                    state.total -= expense.quantity;
+                    expense.quantity = 0; 
                 }
                 new_expenses.push(expense);
                 return true;
@@ -66,6 +108,7 @@ export const AppReducer = (state, action) => {
             return {
                 ...state
             }
+
         default:
             return state;
     }
@@ -83,6 +126,7 @@ const initialState = {
     Location: '$',
     total: 0,
     remaining: 0,
+    budget: 0,
   
 };
 // 2. Creates the context this is the thing our components import and use to get the state
@@ -105,6 +149,7 @@ state.CartValue = totalExpenses;
                 currency: state.Location,
                 total: state.total,
                 remaining: state.remaining,
+                budget: state.budget,
             }}
         >
             {props.children}

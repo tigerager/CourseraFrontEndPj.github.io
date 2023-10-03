@@ -17,12 +17,33 @@ const ExpenseItem = (props) => {
             payload: item,
         });
     };
+
+    const DecreaseItem = () => {
+        const item = {
+            name: props.name,
+        };
+        dispatch({
+            type: 'DECREASE_BY_10',
+            payload: item,
+        });
+    };
+
+    const IncreaseItem = () => {
+        const item = {
+            name: props.name,
+        };
+        dispatch({
+            type: 'INCREASE_BY_10',
+            payload: item,
+        });
+    };
+
     return (
         <tr>
         <td>{props.name}</td>
         <td>{currency}{props.quantity}</td>
-        <td><FaPlusCircle size='2.2em' color="limegreen" onClick={handleDeleteItem}></FaPlusCircle></td>
-        <td><FaMinusCircle size='2.2em' color="red" onClick={handleDeleteItem}></FaMinusCircle></td>
+        <td><FaPlusCircle size='2.2em' color="limegreen" onClick={IncreaseItem}></FaPlusCircle></td>
+        <td><FaMinusCircle size='2.2em' color="red" onClick={DecreaseItem}></FaMinusCircle></td>
         <td><FaTimes size='2.2em'  onClick={handleDeleteItem}></FaTimes></td>
         </tr>
     );
