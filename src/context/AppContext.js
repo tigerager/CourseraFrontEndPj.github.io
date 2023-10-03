@@ -13,7 +13,7 @@ export const AppReducer = (state, action) => {
                         state.total += action.payload.quantity;
                     }
                     else{
-                        alert("The value cannot exceed remaining funds "+state.remaining);
+                        alert("The value cannot exceed remaining funds "+state.Location +state.remaining);
                     }
                     //updatedqty = true;
                 } 

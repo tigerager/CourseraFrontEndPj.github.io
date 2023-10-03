@@ -8,6 +8,10 @@ const CartValue = () => {
             alert('You cannot reduce the budget value lower than the spending');
             document.getElementById('budget').value= total;
         }
+        else if(num>20000){
+            alert('The value cannot exceed '+currency +"20000");
+            document.getElementById('budget').value= 20000;
+        }
         else{
             dispatch({
                 type: 'ADD_REMAINING',
